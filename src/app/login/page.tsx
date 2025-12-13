@@ -132,7 +132,7 @@ export default function LoginPage() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.25rem' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.875rem', color: '#4b5563', fontWeight: 500 }}>
-                  My date of birth (29-9-2002)
+                  My date of birth
                 </label>
                 <input
                   type="date"
@@ -162,7 +162,7 @@ export default function LoginPage() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.875rem', color: '#4b5563', fontWeight: 500 }}>
-                  Your date of birth (24-8-2004)
+                  Your date of birth
                 </label>
                 <input
                   type="date"

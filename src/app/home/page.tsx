@@ -184,7 +184,7 @@ export default function HomePage() {
             textShadow: '0 4px 12px rgba(255, 105, 135, 0.3)',
             fontFamily: '"Great Vibes", cursive'
           }}>
-            Welcome home, Timmi 💖
+            Happy Birthday, Iman! 🎉
           </h1>
         </div>
 
@@ -206,7 +206,29 @@ export default function HomePage() {
             fontWeight: 400,
             letterSpacing: '0.3px'
           }}>
-            You are the most beautiful part of my day and the quiet strength in every challenge I face. Knowing you are in my life makes every moment brighter, transforming the ordinary into something truly cherished. Thank you for your patience, your endless laughter, and for seeing the truest version of me. My world is infinitely better simply because you are in it, and loving you is the easiest and best part of my life.
+            Happy Birthday, Iman! On this special day, I want to celebrate the amazing person you are. Your smile lights up every room, your kindness touches every heart, and your strength inspires everyone around you. May this year bring you endless joy, beautiful moments, and all the dreams you've ever wished for. You deserve nothing but the very best!
+          </p>
+        </div>
+
+        <div style={{
+          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 252, 0.9))',
+          borderRadius: '2rem',
+          padding: '2.5rem 2rem',
+          marginBottom: '3rem',
+          boxShadow: '0 20px 60px -15px rgba(255, 105, 135, 0.3), 0 0 0 1px rgba(255, 182, 193, 0.3)',
+          backdropFilter: 'blur(10px)',
+          border: '2px solid rgba(255, 192, 203, 0.2)'
+        }}>
+          <p style={{
+            fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
+            lineHeight: '2',
+            color: '#4a4a4a',
+            textAlign: 'center',
+            fontFamily: '"Dancing Script", cursive',
+            fontWeight: 500,
+            letterSpacing: '0.5px'
+          }}>
+            Another year of your beautiful presence in this world is a gift we all cherish. Your laughter is like music, your wisdom guides us, and your love makes everything better. Here's to more adventures, more memories, and more reasons to celebrate you. Happy Birthday, Iman! 🎂✨
           </p>
         </div>
 

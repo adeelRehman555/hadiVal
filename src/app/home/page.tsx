@@ -233,38 +233,36 @@ export default function HomePage() {
         </div>
 
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '1.5rem',
+          display: 'flex',
+          justifyContent: 'center',
           marginBottom: '3rem'
         }}>
-          {[1, 2, 3, 4].map((num) => (
-            <div
-              key={num}
-              style={{
-                position: 'relative',
-                borderRadius: '1.5rem',
-                overflow: 'hidden',
-                boxShadow: '0 15px 40px -10px rgba(255, 105, 135, 0.3)',
-                border: '3px solid rgba(255, 182, 193, 0.4)',
-                background: '#fff',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)'
-                e.currentTarget.style.boxShadow = '0 20px 50px -10px rgba(255, 105, 135, 0.5)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0) scale(1)'
-                e.currentTarget.style.boxShadow = '0 15px 40px -10px rgba(255, 105, 135, 0.3)'
-              }}
-            >
-              <div style={{ position: 'relative', width: '100%', paddingTop: '100%' }}>
-                <Image src={`/img${num}.jpeg`} alt={`Memory ${num}`} fill style={{ objectFit: 'cover' }} />
-              </div>
+          <div
+            style={{
+              position: 'relative',
+              borderRadius: '1.5rem',
+              overflow: 'hidden',
+              boxShadow: '0 15px 40px -10px rgba(255, 105, 135, 0.3)',
+              border: '3px solid rgba(255, 182, 193, 0.4)',
+              background: '#fff',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              cursor: 'pointer',
+              maxWidth: '400px',
+              width: '100%'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)'
+              e.currentTarget.style.boxShadow = '0 20px 50px -10px rgba(255, 105, 135, 0.5)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0) scale(1)'
+              e.currentTarget.style.boxShadow = '0 15px 40px -10px rgba(255, 105, 135, 0.3)'
+            }}
+          >
+            <div style={{ position: 'relative', width: '100%', paddingTop: '100%' }}>
+              <Image src="/img.jpeg" alt="Birthday Memory" fill style={{ objectFit: 'cover' }} />
             </div>
-          ))}
+          </div>
         </div>
       </div>
 

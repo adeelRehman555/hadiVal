@@ -1,26 +1,39 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import FlowerSVG from '../../components/FlowerSVG'
 
 export default function LoginPage() {
   const router = useRouter()
-  const [nick, setNick] = useState('')
-  const [dob1, setDob1] = useState('')
-  const [dob2, setDob2] = useState('')
+  const [name, setName] = useState('')
+  const [dob, setDob] = useState('')
   const [error, setError] = useState('')
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   function validate() {
     setError('')
-    const nickOk = nick.trim().toLowerCase() === 'imanoo'
-    const dob1Ok = dob1 === '2004-08-14' 
-    const dob2Ok = dob2 === '2007-01-03' 
-    if (nickOk && dob1Ok && dob2Ok) {
-      // Set session
+    const nameLower = name.trim().toLowerCase()
+    
+    // Check credentials for 3 users
+    const validCredentials = [
+      { name: 'iman', dob: '2007-01-03' },
+      { name: 'noor', dob: '2005-03-25' },
+      { name: 'safia', dob: '2006-09-01' }
+    ]
+    
+    const isValid = validCredentials.some(
+      cred => cred.name === nameLower && cred.dob === dob
+    )
+    
+    if (isValid) {
       sessionStorage.setItem('isAuthenticated', 'true')
+      sessionStorage.setItem('userName', name.trim())
       router.push('/home')
     } else {
-      setError('Credentials do not match — try again with love 💌')
+      setError('Incorrect credentials — please try again with love 💌')
     }
   }
 
@@ -33,216 +46,355 @@ export default function LoginPage() {
       padding: '1rem',
       position: 'relative',
       overflow: 'hidden',
-      background: 'radial-gradient(ellipse 1200px 600px at 10% 10%, rgba(255, 182, 193, 0.2), transparent), radial-gradient(ellipse 800px 800px at 90% 90%, rgba(255, 192, 203, 0.15), transparent), linear-gradient(180deg, #fff5f7 0%, #ffe4f0 100%)'
+      background: 'linear-gradient(135deg, #0a0a0a 0%, #1a0a0f 50%, #0f0a0a 100%)',
     }}>
-      {/* Falling flowers animation */}
-      {[...Array(15)].map((_, i) => {
-        const delay = (i * 1.5) % 8
-        const duration = 8 + (i % 4)
-        const left = `${(i * 7) % 100}%`
+      {/* Animated hearts background */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+          10% { opacity: 0.6; }
+          90% { opacity: 0.3; }
+          100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+        }
+        @keyframes shimmer {
+          0% { background-position: -1000px 0; }
+          100% { background-position: 1000px 0; }
+        }
+      `}</style>
+
+      {/* Floating hearts - only render on client */}
+      {mounted && [...Array(20)].map((_, i) => {
+        const delay = (i * 2) % 15
+        const duration = 15 + (i % 5)
+        const left = `${(i * 5) % 100}%`
+        const size = 20 + (i % 3) * 10
         return (
           <div
             key={i}
             style={{
               position: 'absolute',
-              top: '-15vh',
+              bottom: '-10%',
               left,
-              animation: `fall ${duration}s linear ${delay}s infinite`,
-              opacity: 0.85,
+              animation: `float ${duration}s linear ${delay}s infinite`,
+              fontSize: `${size}px`,
               pointerEvents: 'none',
-              willChange: 'transform'
+              willChange: 'transform',
+              filter: 'drop-shadow(0 0 10px rgba(255, 0, 50, 0.5))'
             }}
           >
-            <FlowerSVG className="w-10 h-10 md:w-12 md:h-12" />
+            ❤️
           </div>
         )
       })}
 
+      {/* Decorative circles */}
+      <div style={{
+        position: 'absolute',
+        width: '600px',
+        height: '600px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(220, 20, 60, 0.2), transparent 70%)',
+        top: '-300px',
+        right: '-300px',
+        pointerEvents: 'none',
+        animation: 'pulse 8s ease-in-out infinite'
+      }} />
+      <div style={{
+        position: 'absolute',
+        width: '500px',
+        height: '500px',
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(139, 0, 0, 0.25), transparent 70%)',
+        bottom: '-250px',
+        left: '-250px',
+        pointerEvents: 'none',
+        animation: 'pulse 6s ease-in-out infinite reverse'
+      }} />
+
       <div style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '500px',
-        zIndex: 10
+        maxWidth: '440px',
+        zIndex: 10,
+        padding: '0 0.5rem'
       }}>
+        {/* Card with elegant border */}
         <div style={{
-          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 250, 252, 0.95))',
-          borderRadius: '1.5rem',
-          boxShadow: '0 30px 60px -15px rgba(255, 105, 135, 0.3), 0 0 0 1px rgba(255, 182, 193, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.8)',
-          padding: '2rem 1.5rem',
-          backdropFilter: 'blur(12px)',
-          border: '2px solid transparent',
-          backgroundClip: 'padding-box'
+          background: 'linear-gradient(145deg, #ffffff 0%, #fff8f9 50%, #fef5f7 100%)',
+          borderRadius: '1.75rem',
+          boxShadow: '0 40px 80px -20px rgba(220, 20, 60, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 2px 0 0 rgba(255, 255, 255, 1)',
+          padding: 'clamp(2rem, 5vw, 2.75rem) clamp(1.5rem, 4vw, 2.25rem)',
+          backdropFilter: 'blur(20px)',
+          border: '3px solid transparent',
+          backgroundImage: 'linear-gradient(145deg, #ffffff 0%, #fff8f9 50%, #fef5f7 100%), linear-gradient(135deg, #dc143c, #ff1744, #8b0000, #dc143c)',
+          backgroundOrigin: 'border-box',
+          backgroundClip: 'padding-box, border-box',
+          animation: 'pulse 4s ease-in-out infinite',
+          position: 'relative',
+          overflow: 'visible'
         }}>
+          {/* Top heart decoration */}
+          <div style={{
+            position: 'absolute',
+            top: '-22px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            fontSize: 'clamp(2.25rem, 6vw, 2.75rem)',
+            filter: 'drop-shadow(0 4px 16px rgba(220, 20, 60, 0.8))',
+            animation: 'pulse 2s ease-in-out infinite'
+          }}>
+            💕
+          </div>
+          
+          {/* Corner decorations */}
+          <div style={{ position: 'absolute', top: '12px', left: '12px', fontSize: 'clamp(1.125rem, 4vw, 1.375rem)', opacity: 0.7 }}>🌹</div>
+          <div style={{ position: 'absolute', top: '12px', right: '12px', fontSize: 'clamp(1.125rem, 4vw, 1.375rem)', opacity: 0.7 }}>🌹</div>
+
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <div style={{ marginBottom: '1rem', fontSize: '3rem', filter: 'drop-shadow(0 2px 4px rgba(255, 105, 135, 0.3))' }}>
-              🎂
-            </div>
+          <div style={{ textAlign: 'center', marginBottom: 'clamp(1.75rem, 4vw, 2.25rem)' }}>
             <h1 style={{
-              fontSize: 'clamp(2rem, 8vw, 3rem)',
+              fontSize: 'clamp(2.25rem, 7vw, 3rem)',
               fontFamily: '"Great Vibes", cursive',
-              color: '#ff6f91',
-              marginBottom: '0.5rem',
+              background: 'linear-gradient(135deg, #dc143c 0%, #ff1744 30%, #c41e3a 60%, #8b0000 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              marginBottom: 'clamp(0.625rem, 2vw, 0.875rem)',
               fontWeight: 400,
-              lineHeight: 1.2,
-              textShadow: '0 2px 8px rgba(255, 105, 135, 0.2)'
+              lineHeight: 1.1,
+              filter: 'drop-shadow(0 3px 12px rgba(220, 20, 60, 0.4))',
+              letterSpacing: '0.5px'
             }}>
-              Happy Birthday, Iman
+              Happy Valentine's Day
             </h1>
-            <p style={{
-              fontSize: 'clamp(0.875rem, 3vw, 0.95rem)',
-              color: '#ec4899',
-              opacity: 0.9
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 'clamp(0.5rem, 2vw, 0.75rem)',
+              marginBottom: 'clamp(0.5rem, 2vw, 0.75rem)',
+              flexWrap: 'wrap'
             }}>
-              Enter your special credentials to unlock your birthday surprise
+              <span style={{ fontSize: 'clamp(1.125rem, 4vw, 1.375rem)', animation: 'pulse 1s ease-in-out infinite' }}>💖</span>
+              <p style={{
+                fontSize: 'clamp(1rem, 3vw, 1.125rem)',
+                background: 'linear-gradient(90deg, #dc143c, #ff1744, #8b0000)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                fontWeight: 700,
+                letterSpacing: '0.5px'
+              }}>
+                Welcome, My Love
+              </p>
+              <span style={{ fontSize: 'clamp(1.125rem, 4vw, 1.375rem)', animation: 'pulse 1s ease-in-out infinite' }}>💖</span>
+            </div>
+            <p style={{
+              fontSize: 'clamp(0.8125rem, 2.5vw, 0.9375rem)',
+              color: '#666',
+              lineHeight: 1.5,
+              maxWidth: '320px',
+              margin: '0 auto',
+              padding: '0 0.5rem'
+            }}>
+              Enter your special details to unlock your surprise
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={(e) => { e.preventDefault(); validate() }} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <form onSubmit={(e) => { e.preventDefault(); validate() }} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(1.25rem, 3vw, 1.5rem)' }}>
+            {/* Name Input */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <label style={{ fontSize: '0.875rem', color: '#4b5563', fontWeight: 500 }}>
-                Enter your Nick Name
+              <label style={{ 
+                fontSize: 'clamp(0.875rem, 2.5vw, 0.9375rem)', 
+                color: '#1a1a1a', 
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                letterSpacing: '0.2px'
+              }}>
+                <span style={{ fontSize: 'clamp(1rem, 3vw, 1.125rem)' }}>💝</span>
+                Your Name
               </label>
               <input
-                value={nick}
-                onChange={(e) => setNick(e.target.value)}
-                placeholder=""
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your name..."
                 style={{
-                  padding: '0.875rem 1rem',
+                  padding: 'clamp(0.875rem, 2.5vw, 1rem) clamp(1rem, 3vw, 1.25rem)',
                   borderRadius: '1rem',
-                  border: '1.5px solid #fce7f3',
-                  fontSize: '1rem',
+                  border: '2px solid #dc143c',
+                  fontSize: 'clamp(0.9375rem, 2.5vw, 1rem)',
                   outline: 'none',
-                  transition: 'all 0.2s',
-                  background: '#fff',
-                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  background: '#ffffff',
+                  boxShadow: '0 3px 10px rgba(220, 20, 60, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.9)',
+                  color: '#1a1a1a',
+                  fontWeight: 600,
+                  width: '100%'
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#fbcfe8'
-                  e.target.style.boxShadow = '0 0 0 3px rgba(251, 207, 232, 0.3)'
+                  e.target.style.borderColor = '#ff1744'
+                  e.target.style.boxShadow = '0 0 0 4px rgba(220, 20, 60, 0.2), 0 6px 16px rgba(220, 20, 60, 0.3)'
+                  e.target.style.transform = 'translateY(-2px)'
+                  e.target.style.background = '#fffeff'
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = '#fce7f3'
-                  e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
+                  e.target.style.borderColor = '#dc143c'
+                  e.target.style.boxShadow = '0 3px 10px rgba(220, 20, 60, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.9)'
+                  e.target.style.transform = 'translateY(0)'
+                  e.target.style.background = '#ffffff'
                 }}
               />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.25rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.875rem', color: '#4b5563', fontWeight: 500 }}>
-                  My date of birth
-                </label>
-                <input
-                  type="date"
-                  value={dob1}
-                  onChange={(e) => setDob1(e.target.value)}
-                  placeholder=""
-                  style={{
-                    padding: '0.875rem 1rem',
-                    borderRadius: '1rem',
-                    border: '1.5px solid #fce7f3',
-                    fontSize: '1rem',
-                    outline: 'none',
-                    transition: 'all 0.2s',
-                    background: '#fff',
-                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#fbcfe8'
-                    e.target.style.boxShadow = '0 0 0 3px rgba(251, 207, 232, 0.3)'
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#fce7f3'
-                    e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
-                  }}
-                />
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <label style={{ fontSize: '0.875rem', color: '#4b5563', fontWeight: 500 }}>
-                  Your date of birth
-                </label>
-                <input
-                  type="date"
-                  value={dob2}
-                  onChange={(e) => setDob2(e.target.value)}
-                  placeholder=""
-                  style={{
-                    padding: '0.875rem 1rem',
-                    borderRadius: '1rem',
-                    border: '1.5px solid #fce7f3',
-                    fontSize: '1rem',
-                    outline: 'none',
-                    transition: 'all 0.2s',
-                    background: '#fff',
-                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = '#fbcfe8'
-                    e.target.style.boxShadow = '0 0 0 3px rgba(251, 207, 232, 0.3)'
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = '#fce7f3'
-                    e.target.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)'
-                  }}
-                />
-              </div>
+            {/* Date of Birth Input */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label style={{ 
+                fontSize: 'clamp(0.875rem, 2.5vw, 0.9375rem)', 
+                color: '#1a1a1a', 
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                letterSpacing: '0.2px'
+              }}>
+                <span style={{ fontSize: 'clamp(1rem, 3vw, 1.125rem)' }}>🎂</span>
+                Your Date of Birth
+              </label>
+              <input
+                type="date"
+                value={dob}
+                onChange={(e) => setDob(e.target.value)}
+                style={{
+                  padding: 'clamp(0.875rem, 2.5vw, 1rem) clamp(1rem, 3vw, 1.25rem)',
+                  borderRadius: '1rem',
+                  border: '2px solid #dc143c',
+                  fontSize: 'clamp(0.9375rem, 2.5vw, 1rem)',
+                  outline: 'none',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  background: '#ffffff',
+                  boxShadow: '0 3px 10px rgba(220, 20, 60, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.9)',
+                  color: '#1a1a1a',
+                  fontWeight: 600,
+                  width: '100%'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#ff1744'
+                  e.target.style.boxShadow = '0 0 0 4px rgba(220, 20, 60, 0.2), 0 6px 16px rgba(220, 20, 60, 0.3)'
+                  e.target.style.transform = 'translateY(-2px)'
+                  e.target.style.background = '#fffeff'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#dc143c'
+                  e.target.style.boxShadow = '0 3px 10px rgba(220, 20, 60, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.9)'
+                  e.target.style.transform = 'translateY(0)'
+                  e.target.style.background = '#ffffff'
+                }}
+              />
             </div>
 
             {error && (
               <div style={{
-                padding: '0.75rem 1rem',
-                borderRadius: '0.75rem',
-                background: '#fee2e2',
-                color: '#dc2626',
-                fontSize: '0.875rem',
-                border: '1px solid #fecaca'
+                padding: 'clamp(0.875rem, 2.5vw, 1rem) clamp(1rem, 3vw, 1.25rem)',
+                borderRadius: '1rem',
+                background: 'linear-gradient(135deg, #fff8f8 0%, #ffe8e8 100%)',
+                color: '#b91c1c',
+                fontSize: 'clamp(0.8125rem, 2.5vw, 0.875rem)',
+                border: '2px solid #ff4757',
+                fontWeight: 600,
+                textAlign: 'center',
+                boxShadow: '0 4px 12px rgba(220, 20, 60, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.5)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.5rem',
+                animation: 'pulse 0.5s ease-in-out',
+                lineHeight: 1.4
               }}>
-                {error}
+                <span style={{ fontSize: 'clamp(0.9375rem, 3vw, 1rem)' }}>❌</span>
+                <span>{error}</span>
               </div>
             )}
 
             <button
               type="submit"
               style={{
-                marginTop: '0.5rem',
-                padding: '0.875rem 1.5rem',
+                marginTop: 'clamp(0.5rem, 2vw, 0.75rem)',
+                padding: 'clamp(0.875rem, 2.5vw, 1rem) clamp(1.5rem, 4vw, 2rem)',
                 borderRadius: '9999px',
-                background: 'linear-gradient(135deg, #ff6f91 0%, #ff1493 50%, #ec4899 100%)',
-                color: '#fff',
-                fontWeight: 600,
-                fontSize: 'clamp(0.875rem, 3vw, 1rem)',
+                background: 'linear-gradient(135deg, #dc143c 0%, #c41e3a 50%, #8b0000 100%)',
+                color: '#ffffff',
+                fontWeight: 700,
+                fontSize: 'clamp(0.875rem, 2.5vw, 0.9375rem)',
                 border: 'none',
                 cursor: 'pointer',
-                boxShadow: '0 10px 30px -5px rgba(236, 72, 153, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
+                boxShadow: '0 8px 24px -5px rgba(220, 20, 60, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.2) inset, 0 -2px 8px rgba(0, 0, 0, 0.15) inset',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 width: '100%',
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                letterSpacing: '0.5px',
+                textTransform: 'uppercase',
+                textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)'
-                e.currentTarget.style.boxShadow = '0 15px 40px -5px rgba(236, 72, 153, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2) inset'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = '0 12px 32px -5px rgba(220, 20, 60, 0.7), 0 0 0 3px rgba(255, 255, 255, 0.3) inset, 0 -2px 8px rgba(0, 0, 0, 0.15) inset'
+                e.currentTarget.style.background = 'linear-gradient(135deg, #ff1744 0%, #dc143c 50%, #c41e3a 100%)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0) scale(1)'
-                e.currentTarget.style.boxShadow = '0 10px 30px -5px rgba(236, 72, 153, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) inset'
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = '0 8px 24px -5px rgba(220, 20, 60, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.2) inset, 0 -2px 8px rgba(0, 0, 0, 0.15) inset'
+                e.currentTarget.style.background = 'linear-gradient(135deg, #dc143c 0%, #c41e3a 50%, #8b0000 100%)'
               }}
             >
-              Open Your Birthday Surprise 🎉
+              💘 Unlock Your Surprise 💘
             </button>
           </form>
 
-          <p style={{
-            marginTop: '1.5rem',
+          {/* Bottom decoration */}
+          <div style={{
+            marginTop: 'clamp(1.5rem, 3vw, 2rem)',
+            padding: 'clamp(0.875rem, 2.5vw, 1rem)',
             textAlign: 'center',
-            fontSize: 'clamp(0.75rem, 2.5vw, 0.8rem)',
-            color: '#9ca3af'
+            fontSize: 'clamp(0.8125rem, 2.5vw, 0.875rem)',
+            background: 'linear-gradient(135deg, rgba(220, 20, 60, 0.05), rgba(139, 0, 0, 0.08))',
+            borderRadius: '0.875rem',
+            border: '1px solid rgba(220, 20, 60, 0.15)',
+            boxShadow: 'inset 0 2px 6px rgba(220, 20, 60, 0.08)'
           }}>
-            This is a birthday surprise — no data is stored.
-          </p>
+            <p style={{
+              color: '#666',
+              fontStyle: 'italic',
+              fontWeight: 500,
+              margin: 0,
+              lineHeight: 1.5
+            }}>
+              "Love is not just a feeling,<br />it's my promise to you" ❤️
+            </p>
+          </div>
+          
+          {/* Bottom heart decorations */}
+          <div style={{
+            position: 'absolute',
+            bottom: 'clamp(10px, 2vw, 14px)',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: 'clamp(0.625rem, 2vw, 0.875rem)',
+            fontSize: 'clamp(1rem, 3vw, 1.125rem)',
+            opacity: 0.75
+          }}>
+            <span>💖</span>
+            <span>💝</span>
+            <span>💖</span>
+          </div>
         </div>
       </div>
     </div>

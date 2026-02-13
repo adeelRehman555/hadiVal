@@ -74,7 +74,7 @@ function ImanValentinePage({ onLogout }: { onLogout: () => void }) {
         drift: 0.5,
         ticks: 200,
         zIndex: 9999
-      })
+      } as any)
       
       // Right side hearts
       confetti({
@@ -89,7 +89,7 @@ function ImanValentinePage({ onLogout }: { onLogout: () => void }) {
         drift: -0.5,
         ticks: 200,
         zIndex: 9999
-      })
+      } as any)
       
       // Center burst
       confetti({
@@ -103,7 +103,7 @@ function ImanValentinePage({ onLogout }: { onLogout: () => void }) {
         gravity: 0.6,
         ticks: 250,
         zIndex: 9999
-      })
+      } as any)
     }
 
     // Launch immediately
@@ -585,7 +585,7 @@ function NoorPage({ onLogout }: { onLogout: () => void }) {
         drift: 0.5,
         ticks: 200,
         zIndex: 9999
-      })
+      } as any)
       
       // Right side hearts
       confetti({
@@ -600,7 +600,7 @@ function NoorPage({ onLogout }: { onLogout: () => void }) {
         drift: -0.5,
         ticks: 200,
         zIndex: 9999
-      })
+      } as any)
       
       // Center burst
       confetti({
@@ -614,7 +614,7 @@ function NoorPage({ onLogout }: { onLogout: () => void }) {
         gravity: 0.6,
         ticks: 250,
         zIndex: 9999
-      })
+      } as any)
     }
 
     // Launch immediately
@@ -1095,7 +1095,7 @@ function SafiaPage({ onLogout }: { onLogout: () => void }) {
         drift: 0.5,
         ticks: 200,
         zIndex: 9999
-      })
+      } as any)
       
       // Right side hearts
       confetti({
@@ -1110,7 +1110,7 @@ function SafiaPage({ onLogout }: { onLogout: () => void }) {
         drift: -0.5,
         ticks: 200,
         zIndex: 9999
-      })
+      } as any)
       
       // Center burst
       confetti({
@@ -1124,7 +1124,7 @@ function SafiaPage({ onLogout }: { onLogout: () => void }) {
         gravity: 0.6,
         ticks: 250,
         zIndex: 9999
-      })
+      } as any)
     }
 
     // Launch immediately
